@@ -13,18 +13,20 @@ Citizen.CreateThread(function()
 
         Citizen.Wait(0)
     end
-  TriggerEvent('chat:addSuggestion', '/reply', _U('discription_reply'), {
-      { name="id", help= _U('help_text_id') },
-      { name="msg", help= _U('help_text_messege_reply') }
-  })
-  
-  TriggerEvent('chat:addSuggestion', '/report', _U('description_report'), {
-      { name="msg", help= _U('help_text_messege_report') }
-  })
+
   
 	ESX.TriggerServerCallback("esx_report:fetchUserRank", function(group)
 		usergroup = group
-	end)
+  end)
+  
+  TriggerEvent('chat:addSuggestion', '/reply', _U('discription_reply'), {
+    { name="id", help= _U('help_text_id') },
+    { name="msg", help= _U('help_text_messege_reply') }
+})
+
+TriggerEvent('chat:addSuggestion', '/report', _U('description_report'), {
+    { name="msg", help= _U('help_text_messege_report') }
+})
 end)
 
 RegisterNetEvent("esx_report:textmsg")
