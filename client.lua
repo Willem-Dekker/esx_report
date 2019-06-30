@@ -19,7 +19,7 @@ Citizen.CreateThread(function()
 		usergroup = group
   end)
   
-  TriggerEvent('chat:addSuggestion', '/reply', _U('discription_reply'), {
+  TriggerEvent('chat:addSuggestion', '/reply', _U('description_reply'), {
     { name="id", help= _U('help_text_id') },
     { name="msg", help= _U('help_text_messege_reply') }
 })

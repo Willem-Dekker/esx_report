@@ -17,7 +17,7 @@ RegisterCommand('reply', function(source, args, rawCommand)
 					textmsg = (textmsg .. ' ' .. tostring(cm[i]))
 				end
 			end
-			local xPlayer = getIdentity(source)
+			local xPlayer = ESX.GetPlayerFromId(source)
 		    if xPlayer.getGroup() ~= Config.defaultUserGroup then
 			    TriggerClientEvent('esx_report:textmsg', tPID, source, textmsg, names2, names3)
 				TriggerClientEvent('esx_report:sendReply', -1, source, textmsg, names2, names3)
@@ -41,11 +41,10 @@ RegisterCommand('report', function(source, args, rawCommand)
 					textmsg = (textmsg .. ' ' .. tostring(cm[i]))
 				end
 			end
+			TriggerClientEvent('esx_report:sendReport', -1, source, names1, textmsg)
 			if Config.useDiscord then
 				SendWebhookMessage(Config.webhookurl, '[REPORT] ['.. source ..']' .. names1 ..'  '..':  `' .. textmsg .. '`')
-			end
-		    TriggerClientEvent('esx_report:sendReport', -1, source, names1, textmsg)
-			
+			end		
 		end
 end, false)
 
