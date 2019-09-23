@@ -10,73 +10,75 @@ Citizen.CreateThread(function()
         TriggerEvent('esx:getSharedObject', function(obj) 
             ESX = obj 
         end)
-
         Citizen.Wait(0)
     end
 
-  
-	ESX.TriggerServerCallback("esx_report:fetchUserRank", function(group)
-		usergroup = group
-  end)
-  
-  TriggerEvent('chat:addSuggestion', '/reply', _U('description_reply'), {
-    { name="id", help= _U('help_text_id') },
-    { name="msg", help= _U('help_text_messege_reply') }
-})
+    while ESX.GetPlayerData().job == nil do
+        Citizen.Wait(100)
+    end
 
-TriggerEvent('chat:addSuggestion', '/report', _U('description_report'), {
-    { name="msg", help= _U('help_text_messege_report') }
-})
+    ESX.TriggerServerCallback("esx_report:fetchUserRank", function(group)
+        usergroup = group
+    end)
+
+    TriggerEvent('chat:addSuggestion', '/reply', _U('description_reply'), {
+        { name="id", help= _U('help_text_id') },
+        { name="msg", help= _U('help_text_messege_reply') }
+    })
+
+    TriggerEvent('chat:addSuggestion', '/report', _U('description_report'), {
+        { name="msg", help= _U('help_text_messege_report') }
+    })
 end)
 
 RegisterNetEvent("esx_report:textmsg")
 AddEventHandler('esx_report:textmsg', function(source, textmsg, names2, names3 )
-	local message = names3 .."  "..": " .. textmsg
-	local name = "Reply"
-	TriggerEvent('chat:addMessage', {
-            template = formatOfMessage, 
-            args = { name, message }
+    local message = names3 .."  "..": " .. textmsg
+    local name = "Reply"
+    TriggerEvent('chat:addMessage', {
+        template = formatOfMessage, 
+        args = { name, message }
     })
 end)
 
 
 RegisterNetEvent('esx_report:sendReply')
 AddEventHandler('esx_report:sendReply', function(source, textmsg, names2, names3 ) 
-  if usergroup ~= Config.defaultUserGroup then
-    local message = names3 .." -> " .. names2 ..":  " .. textmsg
-	local name = "Reply"
-	
-	TriggerEvent('chat:addMessage', {
+    if usergroup ~= Config.defaultUserGroup then
+        local message = names3 .." -> " .. names2 ..":  " .. textmsg
+        local name = "Reply"
+        
+        TriggerEvent('chat:addMessage', {
             template = formatOfMessage, 
             args = { name, message }
-    })
-	
-  end
+        })
+        
+    end
 end)
 
 RegisterNetEvent('esx_report:sendReport')
 AddEventHandler('esx_report:sendReport', function(id, name, message)
-  local myId = PlayerId()
-  local pid = GetPlayerFromServerId(id)
-
-  if pid == myId then
-	local name = "Report"
-	
-	TriggerEvent('chat:addMessage', {
+    local myId = PlayerId()
+    local pid = GetPlayerFromServerId(id)
+    
+    if pid == myId then
+        local name = "Report"
+        
+        TriggerEvent('chat:addMessage', {
             template = formatOfMessage,
             args = { name, _U("send_to_admins") }
-    })
-  end 
-  
-  if usergroup ~= 'user' then
-    local message =  "[".. id .."]" .. name .."  "..": " .. message
-	local name = "Report"
-	
-	TriggerEvent('chat:addMessage', {
+        })
+    end
+    
+    if usergroup ~= 'user' then
+        local message =  "[".. id .."]" .. name .."  "..": " .. message
+        local name = "Report"
+        
+        TriggerEvent('chat:addMessage', {
             template = formatOfMessage,
             args = { name, message }
-    })
-	
-  end
+        })
+        
+    end
 end)
 
